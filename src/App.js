@@ -1,24 +1,34 @@
 import Banner from "./components/Banner/Banner";
-import EditText from "./components/EditText";
 import Form from "./components/Form";
 import {useState} from "react";
 import Time from "./components/Time";
-import time from "./components/Time";
+import { v4 as uuidv4 } from 'uuid';
+import Footer from "./components/Footer";
 
 
 function App() {
 
 
-    const times = [
-        {nome: 'Programação', primaryColor: '#57C278', secondaryColor: '#D9F7E9'},
-        {nome: 'Front End', primaryColor: '#82CFFA', secondaryColor: '#E8F8FF'},
-        {nome: 'Data Science', primaryColor: '#A6D157', secondaryColor: '#F0F8E2'},
-        {nome: 'Devops', primaryColor: '#E06B69', secondaryColor: '#FDE7E8'},
-        {nome: 'UX e Design', primaryColor: '#DB6EBF', secondaryColor: '#FAE9F5'},
-        {nome: 'Mobile', primaryColor: '#FFBA05', secondaryColor: '#FFF5D9'},
-        {nome: 'Inovação e Gestão', primaryColor: '#FF8A29', secondaryColor: '#FFEEDF'},
+    const [times, setTimes]  = useState([
+        {id: uuidv4(), nome: 'Programação', color: '#D9F7E9'},
+        {id: uuidv4(), nome: 'Front End', color: '#E8F8FF'},
+        {id: uuidv4(), nome: 'Data Science', color: '#F0F8E2'},
+        {id: uuidv4(), nome: 'Devops',  color: '#FDE7E8'},
+        {id: uuidv4(), nome: 'UX e Design',  color: '#FAE9F5'},
+        {id: uuidv4(), nome: 'Mobile',   color: '#FFF5D9'},
+        {id: uuidv4(), nome: 'Inovação e Gestão', color: '#FFEEDF'},
 
-    ]
+    ])
+
+    const colorChange = (cor, id) => {
+        setTimes(times.map(time => time.id === id ? {...time, color: cor} : time))
+    }
+
+    const deleteColaborador = (id) => {
+        setColaborador(colaboradores.filter(colaborador => colaborador.id !== id))
+
+    }
+
 
     const [colaboradores, setColaborador] = useState([]);
 
@@ -29,12 +39,19 @@ function App() {
     return (
         <div className="App">
             <Banner/>
-            <Form times={times.map(time=> time.nome)} onFormSend={colaborador=> onFormSend(colaborador)} />
+            <Form times={times.map(time => time.nome)} onFormSend={colaborador => onFormSend(colaborador)}/>
             {times.map(time => <Time key={time.nome}
                                      nome={time.nome}
-                                     primaryColor={time.primaryColor}
-                                     secondaryColor={time.secondaryColor}
-                                     colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}/>)}
+                                     primaryColor={time.color}
+                                     color={time.color}
+                                     id={time.id}
+                                     colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}
+                                     onDelete={deleteColaborador}
+                                     onColorChange={colorChange}
+
+                />
+            )}
+            <Footer/>
         </div>
     );
 }

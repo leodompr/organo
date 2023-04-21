@@ -3,12 +3,14 @@ import './Form.css'
 import DropDown from "../DropDown";
 import ButtonHome from "../Button";
 import {useState} from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 export const Form = (props) => {
 
     const onSave = (event) => {
         event.preventDefault()
         props.onFormSend({
+            id: uuidv4(),
             nome: nome,
             cargo: cargo,
             imagem: imagem,
@@ -24,6 +26,7 @@ export const Form = (props) => {
     const [cargo, setCargo] = useState('')
     const [imagem, setImagem] = useState('')
     const [time, setTime] = useState('')
+
 
 
     return (
